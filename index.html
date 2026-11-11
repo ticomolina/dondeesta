@@ -540,7 +540,10 @@ addEventListener('resize', () => { if ($('game').classList.contains('on')) fit()
 renderRecord();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
+  navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(()=>{});
+  // cuando llega una versión nueva, recarga sola una vez
+  let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded){ reloaded=true; location.reload(); } });
 }
 </script>
 </body>
